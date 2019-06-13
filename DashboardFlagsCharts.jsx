@@ -4,30 +4,19 @@ import HighchartsReact from 'highcharts-react-official';
 import { API_URL } from '../../config';
 
 const HighChartMain = () => {
-  const [week, setWeek] = useState([]);
-  const [ok, setOk] = useState([]);
-  const [warn, setWarn] = useState([]);
-  const [trouble, setTrouble] = useState([]);
+  const [state, setStateFunc] = useState([]);
+
 
   useEffect(() => {
     fetch(`${API_URL}/events`)
       .then((results) => results.json())
       .then((data) => {
-        const weekValue = [];
-        const okValues = [];
-        const warnValues = [];
-        const troubleValue = [];
-
+        const statesValue = [];
+      
         data.forEach((value) => {
-          weekValue.push(value.week);
-          okValues.push(value.ok);
-          warnValues.push(value.warn);
-          troubleValue.push(value.trouble);
+          statesValue.push(value.Object);
         });
-        setWeek(weekValue);
-        setOk(okValues);
-        setWarn(warnValues);
-        setTrouble(troubleValue);
+        setStateFunc(statesValue);
       });
   }, []);
 
@@ -43,22 +32,22 @@ const HighChartMain = () => {
           text: 'Dashboard Charts',
         },
         xAxis: {
-          categories: week,
+          categories: state,
         },
         credits: {
           enabled: false,
         },
         series: [{
           name: 'Green',
-          data: ok,
+          data: state,
           color: 'lightgreen',
         }, {
           name: 'Yellow',
-          data: warn,
+          data: state,
           color: 'yellow',
         }, {
           name: 'Red',
-          data: trouble,
+          data: state,
           color: 'red',
         }],
       }}
